@@ -2,7 +2,7 @@
 This is just a test repo which creates a server that loads data from file & present like a quiz.
 
 
-###Installation
+### Installation
 * Clone repo
 * Run `go run server.go 1 2` where 1 & 2 are number of lessons you want to include
 * Run `make test` to run test
