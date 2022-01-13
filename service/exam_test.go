@@ -6,8 +6,7 @@ import (
 	"testing"
 )
 
-
-func TestLoadingLesson(t *testing.T)  {
+func TestLoadingLesson(t *testing.T) {
 	totalQuestionAnswer = make(map[string]string)
 	lesson := lesson{
 		filePath: "asd",
@@ -16,13 +15,12 @@ func TestLoadingLesson(t *testing.T)  {
 		},
 	}
 	data := loadLesson(lesson)
-	assert.Equal(t,"hallo",data["hello"])
+	assert.Equal(t, "hallo", data["hello"])
 }
-
 
 func TestLoadingMultipleLessons(t *testing.T) {
 	totalQuestionAnswer = make(map[string]string)
-	readerFunc = func (filePath string) []byte {
+	readerFunc = func(filePath string) []byte {
 		if filePath == "service/lessons/1.json" {
 			return []byte(`{"hello":"hallo"}`)
 		}
@@ -30,6 +28,6 @@ func TestLoadingMultipleLessons(t *testing.T) {
 		return []byte(`{"bye":"doi"}`)
 	}
 
-	data := LoadAllQuestionAnswer("1","2")
-	assert.Equal(t, 2,len(data))
+	data := LoadAllQuestionAnswer("1", "2")
+	assert.Equal(t, 2, len(data))
 }

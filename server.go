@@ -25,9 +25,7 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	e.GET("/initial-question", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, service.GetNextQuestion())
-	})
+	e.GET("/initial-question", HandleInitialQuestion)
 
 	e.GET("/next-question", func(c echo.Context) error {
 		question := c.QueryParam("question")
@@ -42,4 +40,8 @@ func main() {
 	})
 
 	e.Logger.Fatal(e.Start(":1323"))
+}
+
+func HandleInitialQuestion(c echo.Context) error {
+	return c.JSON(http.StatusOK, service.GetNextQuestion())
 }
