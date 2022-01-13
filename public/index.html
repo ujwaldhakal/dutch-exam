@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="main" class="container">
+
+    <div class="main-content">
+
+        <div class="row" style="border-bottom: gray solid 5px">
+            <span>Question</span>
+            <div id="question-wrapper" class="col-sm-12" style="height: 400px;font-size: 200px;margin:0 auto">
+            <span id="question">
+                Change word here
+            </span>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 10px;">
+            <span>Answer</span>
+            <div id="answer-wrapper" class="col-sm-12" style="height: 400px;font-size: 200px;margin:0 auto">
+            <span id="star">
+                *****
+            </span>
+                <span id="answer">
+                *******
+            </span>
+
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <button id="reveal" style="width: 100%;height: 40px">
+                SHOW
+            </button>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <button id="next" style="width: 100%;height: 40px">
+                Next <i class="fa fa-arrow"></i>
+            </button>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+<script type="application/javascript">
+
+    $(document).ready(function () {
+        $('.congrats-wrapper').hide();
+        loadQuestion()
+
+        $(document).on('click','#next',function () {
+            let question = $('#question').text();
+            let answer = $('answer-input').text();
+            nextQuestion(question)
+        });
+
+        $(document).on('click','#reveal',function () {
+            $('#answer').show();
+            $('#star').hide();
+        });
+
+
+        function nextQuestion(question) {
+
+            $.ajax({
+                url: `http://localhost:1323/next-question?question=${question}&answer=asd`,
+                success: function (data) {
+                    let firstQuestion = Object.keys(data)[0];
+                    let firstAnswer = Object.values(data)[0];
+
+                    if(typeof firstQuestion === "undefined") {
+                        alert("All question is over")
+                        return;
+                    }
+
+                    $('#question').text(firstQuestion)
+                    $('#answer').text(firstAnswer).hide();
+                    $('#star').show();
+
+
+                },
+            });
+        }
+
+        function loadQuestion() {
+            $.ajax({
+                url: 'http://localhost:1323/initial-question',
+                success: function (data) {
+                    let firstQuestion = Object.keys(data)[0];
+                    let firstAnswer = Object.values(data)[0];
+
+                    $('#question').text(firstQuestion)
+                    $('#answer').text(firstAnswer).hide();
+
+                },
+            });
+        }
+    })
+
+
+</script>
+</body>
+</html>
