@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	_ "fmt"
 	"log"
 	"os"
@@ -25,24 +26,12 @@ type lesson struct {
 
 var totalQuestionAnswer map[string]string
 
-type askedQuestionSummary map[string]string
 
-//func (r lesson) reader(filePath string) []byte {
-//	data, err := os.ReadFile(filePath)
-//	if err != nil {
-//		log.Fatal("Cannot read lessons")
-//	}
-//	return data
-//}
+func loadLesson(lesson lesson) map[string]string {
 
-func loadLesson(lessonNum string) map[string]string {
-	lesson := lesson{
-		filePath:"service/lessons/"+lessonNum+".json",
-		reader: readerFunc,
-	}
 	data := lesson.reader(lesson.filePath)
 
-		m := make(map[string]string)
+	m := make(map[string]string)
 	jsonError := json.Unmarshal(data,&m)
 
 	if jsonError != nil {
@@ -50,7 +39,11 @@ func loadLesson(lessonNum string) map[string]string {
 	}
 
 	for key,val := range m {
+
+		fmt.Println("got man",key,val)
 		totalQuestionAnswer[key] = val
+		fmt.Println("got it",totalQuestionAnswer)
+
 	}
 
 	return m
@@ -66,13 +59,16 @@ func GetNextQuestion() map[string]string {
 
 func LoadAllQuestionAnswer(lessonNums ...string) map[string]string {
 	totalQuestionAnswer = make(map[string]string)
-
 	var wg sync.WaitGroup
 	wg.Add(len(lessonNums))
 	for _,data := range lessonNums {
 		go func(data string) {
 			defer wg.Done()
-			loadLesson(data)
+			lesson := lesson{
+				filePath:"service/lessons/"+data+".json",
+				reader: readerFunc,
+			}
+			loadLesson(lesson)
 		}(data)
 	}
 

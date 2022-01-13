@@ -1,7 +1,7 @@
 package main
 
 import (
-	_"fmt"
+	_ "fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/ujwaldhakal/dutch-exam/service"
 	"log"
@@ -32,7 +32,7 @@ func main() {
 	e.GET("/next-question", func(c echo.Context) error {
 		question := c.QueryParam("question")
 		answer := c.QueryParam("answer")
-		service.MarkQuestionAsAsked(question,answer)
+		service.MarkQuestionAsAsked(question, answer)
 		return c.JSON(http.StatusOK, service.GetNextQuestion())
 	})
 
