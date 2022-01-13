@@ -39,11 +39,7 @@ func loadLesson(lesson lesson) map[string]string {
 	}
 
 	for key,val := range m {
-
-		fmt.Println("got man",key,val)
 		totalQuestionAnswer[key] = val
-		fmt.Println("got it",totalQuestionAnswer)
-
 	}
 
 	return m
@@ -58,10 +54,12 @@ func GetNextQuestion() map[string]string {
 }
 
 func LoadAllQuestionAnswer(lessonNums ...string) map[string]string {
+
 	totalQuestionAnswer = make(map[string]string)
 	var wg sync.WaitGroup
 	wg.Add(len(lessonNums))
 	for _,data := range lessonNums {
+		fmt.Println("yolo",data)
 		go func(data string) {
 			defer wg.Done()
 			lesson := lesson{
@@ -71,9 +69,7 @@ func LoadAllQuestionAnswer(lessonNums ...string) map[string]string {
 			loadLesson(lesson)
 		}(data)
 	}
-
 	wg.Wait()
 
 	return totalQuestionAnswer
-
 }
