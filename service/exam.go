@@ -2,7 +2,6 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	_ "fmt"
 	"log"
 	"os"
@@ -28,6 +27,8 @@ var totalQuestionAnswer map[string]string
 
 func loadLesson(lesson lesson) map[string]string {
 
+	var mutex = &sync.RWMutex{}
+	mutex.Lock()
 	data := lesson.reader(lesson.filePath)
 
 	m := make(map[string]string)
@@ -40,7 +41,7 @@ func loadLesson(lesson lesson) map[string]string {
 	for key, val := range m {
 		totalQuestionAnswer[key] = val
 	}
-
+	mutex.Unlock()
 	return m
 }
 
@@ -61,7 +62,6 @@ func LoadAllQuestionAnswer(lessonNums ...string) map[string]string {
 	var wg sync.WaitGroup
 	wg.Add(len(lessonNums))
 	for _, data := range lessonNums {
-		fmt.Println("yolo", data)
 		go func(data string) {
 			defer wg.Done()
 			lesson := lesson{
