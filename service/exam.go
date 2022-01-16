@@ -49,6 +49,9 @@ func MarkQuestionAsAsked(question string, answer string) {
 }
 
 func GetNextQuestion() map[string]string {
+	for question, ans := range totalQuestionAnswer {
+		return map[string]string{question:ans}
+	}
 	return totalQuestionAnswer
 }
 
