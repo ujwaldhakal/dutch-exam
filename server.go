@@ -1,13 +1,24 @@
 package main
 
 import (
+	"fmt"
 	_ "fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/ujwaldhakal/dutch-exam/service"
+	"html/template"
+	"io"
 	"log"
 	"net/http"
 	"os"
 )
+
+type Template struct {
+	templates *template.Template
+}
+
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
+}
 
 func main() {
 
@@ -18,11 +29,14 @@ func main() {
 	}
 	e := echo.New()
 
-	service.LoadAllQuestionAnswer(lessons...)
+	t := &Template{
+		templates: template.Must(template.ParseGlob("public/*.html")),
+	}
+	e.Renderer = t
 
 	e.GET("/", func(c echo.Context) error {
-		e.File("/", "public/index.html")
-		return c.String(http.StatusOK, "Hello, World!")
+		service.LoadAllQuestionAnswer(lessons...)
+		return c.Render(http.StatusOK, "index.html", nil)
 	})
 
 	e.GET("/initial-question", HandleInitialQuestion)
