@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	_ "fmt"
 	"log"
 	"os"
@@ -35,7 +36,7 @@ func loadLesson(lesson lesson) map[string]string {
 	jsonError := json.Unmarshal(data, &m)
 
 	if jsonError != nil {
-		log.Fatal("Error unmarshelling json")
+		log.Fatal("Error unmarshalling json")
 	}
 
 	for key, val := range m {
@@ -51,7 +52,10 @@ func MarkQuestionAsAsked(question string, answer string) {
 
 func GetNextQuestion() map[string]string {
 	for question, ans := range totalQuestionAnswer {
-		return map[string]string{question: ans}
+		return map[string]string{
+			question: ans,
+			"remaining" : fmt.Sprintf("%d", len(totalQuestionAnswer) - 1),
+		}
 	}
 	return totalQuestionAnswer
 }
@@ -62,7 +66,7 @@ func LoadAllQuestionAnswer(lessonNums ...string) map[string]string {
 	var wg sync.WaitGroup
 	wg.Add(len(lessonNums))
 	for _, data := range lessonNums {
-		go func(data string) {
+		 func(data string) {
 			defer wg.Done()
 			lesson := lesson{
 				filePath: "service/lessons/" + data + ".json",

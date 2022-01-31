@@ -12,6 +12,7 @@
 
     <div class="main-content">
 
+        <h2>Remaining: <span id="remaining"></span></h2>
         <div class="row" style="border-bottom: gray solid 5px">
             <span>Question</span>
             <div id="question-wrapper" class="col-sm-12" style="height: 350px;font-size: 200px;margin:0 auto">
@@ -27,19 +28,19 @@
             <span id="star">
                 *****
             </span>
-                <span id="answer">
+                <span id="answer" style="color:cadetblue">
                 *******
             </span>
 
             </div>
         </div>
         <div class="row" style="margin-top: 10px">
-            <button id="reveal" style="width: 100%;height: 40px">
+            <button id="reveal" style="width: 100%;height: 40px ;z-index: 9999999">
                 SHOW
             </button>
         </div>
         <div class="row" style="margin-top: 10px">
-            <button id="next" style="width: 100%;height: 40px">
+            <button id="next" style="width: 100%;height: 40px ;z-index: 9999999">
                 Next <i class="fa fa-arrow"></i>
             </button>
         </div>
@@ -56,7 +57,6 @@
 
         $(document).on('click','#next',function () {
             let question = $('#question').text();
-            let answer = $('answer-input').text();
             nextQuestion(question)
         });
 
@@ -73,12 +73,20 @@
                 success: function (data) {
                     let firstQuestion = Object.keys(data)[0];
                     let firstAnswer = Object.values(data)[0];
+                    let remaining = Object.values(data)[1];
+
+                    if (firstQuestion === "remaining") {
+                        firstQuestion = Object.keys(data)[1];
+                        firstAnswer = Object.values(data)[1];
+                        remaining = Object.values(data)[0];
+                    }
 
                     if(typeof firstQuestion === "undefined") {
                         alert("All question is over")
                         return;
                     }
 
+                    $('#remaining').text(remaining)
                     $('#question').text(firstQuestion)
                     $('#answer').text(firstAnswer).hide();
                     $('#star').show();
@@ -94,7 +102,15 @@
                 success: function (data) {
                     let firstQuestion = Object.keys(data)[0];
                     let firstAnswer = Object.values(data)[0];
+                    let remaining = Object.values(data)[1];
 
+                    if (firstQuestion === "remaining") {
+
+                        firstQuestion = Object.keys(data)[1];
+                        firstAnswer = Object.values(data)[1];
+                        remaining = Object.values(data)[0];
+                    }
+                    $('#remaining').text(remaining)
                     $('#question').text(firstQuestion)
                     $('#answer').text(firstAnswer).hide();
 

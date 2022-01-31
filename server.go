@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	_ "fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/ujwaldhakal/dutch-exam/service"
