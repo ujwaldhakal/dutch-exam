@@ -8,7 +8,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os"
 )
 
 type Template struct {
@@ -21,8 +20,8 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 
 func main() {
 
-	lessons := os.Args[1:]
 
+	lessons := []string{"1", "2", "3", "4", "5"}
 	if len(lessons) == 0 {
 		log.Fatal("Please provide lessons like go run server.go 1 2 3")
 	}
