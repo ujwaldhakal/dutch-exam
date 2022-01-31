@@ -5,12 +5,13 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gocolly/colly/v2"
 	"log"
+	"io/ioutil"
 	"os"
 	"sync"
 )
 
 func loadLessonsMap(filePath string) []byte {
-	data, err := os.ReadFile(filePath)
+	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		log.Fatal("Cannot read lessons")
 	}

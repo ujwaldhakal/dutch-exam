@@ -1,0 +1,4 @@
+[metadata.heroku]
+  root-package = "github.com/ujwaldhakal/dutch-exam"
+  go-version = "go1.17.6"
+  ensure = "false"
