@@ -51,7 +51,7 @@ func main() {
 		return c.JSON(http.StatusOK, service.GetNextQuestion())
 	})
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":5000"))
 }
 
 func HandleInitialQuestion(c echo.Context) error {
