@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
 type Template struct {
@@ -51,7 +52,12 @@ func main() {
 		return c.JSON(http.StatusOK, service.GetNextQuestion())
 	})
 
-	e.Logger.Fatal(e.Start(":5000"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
+	e.Logger.Fatal(e.Start(":"+port))
 }
 
 func HandleInitialQuestion(c echo.Context) error {
