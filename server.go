@@ -22,7 +22,7 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 func main() {
 
 
-	lessons := []string{"29", "30", "31", "32", "33", "34", "35"}
+	lessons := []string{"36", "37", "38", "39", "40"}
 	if len(lessons) == 0 {
 		log.Fatal("Please provide lessons like go run server.go 1 2 3")
 	}
